@@ -1,10 +1,4 @@
-( function( blocks, element ) {
-
-    var blockStyle = {
-        backgroundColor: '#900',
-        color: '#fff',
-        padding: '20px',
-    };
+( function( blocks,editor, element, components ) {
 
     blocks.registerBlockType( 'wplyr-better-video/wplyr-video-block', {
         title: 'WPlyr video',
@@ -12,29 +6,40 @@
         category: 'embed',
         attributes: {
             content: {
-                type: 'array',
-                source: 'children',
-                selector: 'p',
-            },
-            alignment: {
                 type: 'string',
-                default: 'none',
-            },
+            }
         },
-        edit: function() {
-            return element.createElement(
-                'p',
-                { style: blockStyle },
-                'Hello World, step 1 (from the editor).'
-            );
-        },
+        edit: 
+        function(props) {
+            function onChangeAlignment( newAlignment ) {
+                alert("changed");
+            }
+  
+            return  [
+                element.createElement(
+                        editor.InspectorControls,
+                        { key: 'controls' },
+                            element.createElement( 
+                                components.TextareaControl, {
+                                    style: {height:250},
+                                    label: 'Path to the video:',
+                                    value: props.attributes.content,
+                                    onChange: ( value ) => {
+                                        props.setAttributes( { content: value } );
+                                    }
+                            }, props.attributes.content )
+                    ),
+                element.createElement(WPlyr_video)
+            ]},
         save: function() {
             return  element.createElement(WPlyr_video);
         },
     } );
 }(
     window.wp.blocks,
-    window.wp.element
+    window.wp.editor,
+    window.wp.element,
+    window.wp.components
 )
 
 );

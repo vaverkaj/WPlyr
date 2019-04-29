@@ -5,11 +5,7 @@ class WPlyr_video extends wp.element.Component {
 
   render() {
     return React.createElement("div", {
-      className: "container"
-    }, React.createElement("div", {
-      className: "row mt-5"
-    }, React.createElement("div", {
-      className: "col-md-10 offset-md-1 align-middle p-5 rounded",
+      className: "align-middle p-1 rounded",
       style: {
         backgroundColor: 'deepskyblue'
       }
@@ -38,7 +34,7 @@ class WPlyr_video extends wp.element.Component {
       src: "player/media/toystory.webm",
       type: "video/webm",
       size: 720
-    }))))));
+    }))));
   }
 
 }

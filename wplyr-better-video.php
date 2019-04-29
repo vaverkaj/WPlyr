@@ -30,7 +30,7 @@ function wp_wplyr_video_gutenberg_register_block() {
     wp_register_script(
         'wp_wplyr_video_gutenberg_block',
         plugins_url( 'wplyr-gutenberg-block.js', __FILE__ ),
-        array( 'wp-blocks', 'wp-element', 'wp_wplyr_video_element')
+        array( 'wp-blocks', 'wp-element', 'wp-editor', 'wp_wplyr_video_element')
     );
 
     register_block_type( 'wplyr-better-video/wplyr-video-block', array(
