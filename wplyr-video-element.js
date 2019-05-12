@@ -5,9 +5,9 @@ class WPlyr_video extends wp.element.Component {
 
   render() {
     return React.createElement("div", {
-      className: "align-middle p-1 rounded",
+    //  className: "align-middle p-1 rounded",
       style: {
-        backgroundColor: 'deepskyblue'
+   //     backgroundColor: 'deepskyblue'
       }
     }, React.createElement("div", {
       className: "video-container",
