@@ -1,0 +1,78 @@
+.wplyr_editor_border{
+    border-style: solid;
+    border-width: thin;
+    border-color:lightgray;
+    padding:5pt;
+    margin: 5pt;
+}
+
+
+.wplyr_editor_add_button{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    padding: 10px;
+}
+
+.wplyr_editor_add_button:before {
+    font-family: "dashicons";
+    content: "\f502";
+    color: lightgray;
+    font-size: 30px;
+    vertical-align: top;
+}
+
+.wplyr_editor_remove_button{
+    float: right;
+    text-align: right;
+    position: relative;
+    top: -5pt;
+    left: 3pt;
+}
+
+.wplyr_editor_remove_button:before {
+    font-family: "dashicons";
+    content: "\f158";
+    color: red;
+    vertical-align: top;
+}
+
+.wp_wplyr_video_source_value{
+    float:right;
+}
+
+/* Style the tab */
+.wplyr-bar {
+    overflow: hidden;
+  }
+  
+  /* Style the buttons that are used to open the tab content */
+  .wplyr-bar a {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 7px 8px;
+    transition: 0.3s;
+  }
+  
+  /* Change background color of buttons on hover */
+  .wplyr-bar a:hover {
+    background-color: #ddd;
+  }
+  
+  /* Create an active/current tablink class */
+  .wplyr-bar a.active {
+    background-color: #ccc;
+  }
+
+  .wp_wplyr_youtube_input{
+    width: 60%;
+    float: right;
+  }
+
+  .wplyr-tab{
+    margin: 10px;
+  }

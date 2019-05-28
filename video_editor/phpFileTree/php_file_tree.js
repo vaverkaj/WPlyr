@@ -71,8 +71,15 @@ function init_php_file_tree() {
 	return false;
 }
 
-function change_picked_file(filename) {
-	var elements = document.getElementsByClassName("wp_wplyr_video_name_tag");
+function hasClass(element, className) {
+    return (' ' + element.className + ' ').indexOf(' ' + className+ ' ') > -1;
+}
+
+function change_picked_file(filename,element) {
+	while(!hasClass(element,'wplyr_editor_border')){
+		element = element.parentNode;
+	}
+	var elements = element.getElementsByClassName("wp_wplyr_video_source_value");
 	var i;
 	for (i = 0; i < elements.length; i++) {
 		if(elements[i].tagName == 'B'){

@@ -6,18 +6,24 @@
  * Author: Jakub Váverka
  * Author URI: https://github.com/LaserPork
  **/
-if (!defined('ABSPATH'))
+if(!isset($GLOBALS['wplyr_video_path'])){
+    $GLOBALS['wplyr_video_path'] = $_SERVER['DOCUMENT_ROOT'] . "/wordpress/wp-content/videos";
+    $GLOBALS['wplyr_video_url'] = get_site_url() . "/../wordpress/wp-content/videos";
+}
+
+if (!defined('ABSPATH')){
     define('ABSPATH', dirname(__FILE__) . '/');
+}
 
-include("phpFileTree/php_file_tree.php");
+include("video_editor/phpFileTree/php_file_tree.php");    
+include("wplyr-options-menu.php");
+include("wplyr-video-editor.php");
 
-if (!defined('WPLYR_VIDEO_PATH'))
-    define('WPLYR_VIDEO_PATH', $_SERVER['DOCUMENT_ROOT'] . "/wordpress/wp-content/videos");
-    define('WPLYR_VIDEO_URL', get_site_url() . "/../wordpress/wp-content/videos");
-    
+
 
 function is_gutenberg_active()
 {
+    return false;
     $gutenberg    = false;
     $block_editor = false;
 
@@ -127,75 +133,6 @@ function wp_wplyr_register_content_type()
     register_post_type('wp_wplyr_videos', $args);
 }
 
-function wp_wplyr_add_option_box()
-{
-    if (!is_gutenberg_active()) {
-        add_meta_box(
-            'wp_wplyr_post_picker_id',           // Unique ID
-            'Embed WPlyr video',  // Box title
-            'wp_wplyr_post_picker_html',  // Content callback, must be of type callable
-            'post'                   // Post type
-        );
-    }
-
-    add_meta_box(
-        'wp_wplyr_video_box_id',           // Unique ID
-        'Video options',  // Box title
-        'wp_wplyr_option_box_html',  // Content callback, must be of type callable
-        'wp_wplyr_videos'                   // Post type
-    );
-}
-
-function wp_wplyr_post_picker_html($post)
-{
-
-    $args = array(
-        'post_type' => 'wp_wplyr_videos',
-        'posts_per_page' => -1,
-        'numberposts' => -1
-    );
-    $posts = get_posts($args);
-    foreach ($posts as $key => $post) {
-        $posts[$key]->acf = get_post_meta($post->ID);
-        ?>
-        <table class="wp-list-table widefat fixed striped posts">
-            <tr>
-                <td style="width:20px"> <?php echo $post->ID ?> </td>
-                <td> <?php echo $post->post_title ?> </td>
-                <td> <b>[wplyr id=<?php echo $post->ID ?>]</b> </td>
-                <td> <button class="button" type="button" onclick="insert_shortcode_into_editor(<?php echo $post->ID ?>)">Insert shortcode</button> </td>
-            </tr>
-        </table>
-
-        <script>
-            function insert_shortcode_into_editor(video_id) {
-                if (tinyMCE && tinyMCE.activeEditor) {
-                    tinymce.activeEditor.execCommand('mceInsertContent', false,
-                        "[wplyr id=" + video_id + "]"
-                    );
-                }
-            }
-        </script>
-    <?php
-}
-}
-
-function wp_wplyr_option_box_html($post)
-{
-    wp_enqueue_script('file-tree-script', plugin_dir_url(__FILE__) . '/phpFileTree/php_file_tree.js');
-    wp_enqueue_style('file-tree-stylesheet', plugin_dir_url(__FILE__) . '/phpFileTree/styles/default/default.css');
-    $value = get_post_meta($post->ID, '_wp_wplyr_options', true);
-    ?>
-    <div style="margin:5pt">
-        <label>Path to the video file:</label>
-        <b class="wp_wplyr_video_name_tag" style="float:right;">
-            <?php echo ($value); ?>
-        </b>
-        <input name="wp_wplyr_video_path" value="<?php echo ($value); ?>" type="text" class="wp_wplyr_video_name_tag" readonly hidden>
-    </div>
-    <?php
-    echo php_file_tree(WPLYR_VIDEO_PATH, "javascript:change_picked_file('[link]');");
-}
 
 function  videos_rest_endpoint($request_data)
 {
@@ -211,16 +148,7 @@ function  videos_rest_endpoint($request_data)
     return  $posts;
 }
 
-function wp_wplyr_save_postdata($post_id)
-{
-    if (array_key_exists('wp_wplyr_video_path', $_POST)) {
-        update_post_meta(
-            $post_id,
-            '_wp_wplyr_options',
-            $_POST['wp_wplyr_video_path']
-        );
-    }
-}
+
 
 function wp_wplyr_video_setup()
 {
@@ -228,7 +156,20 @@ function wp_wplyr_video_setup()
     ?>
     <script>
         function wp_wplyr_video_setup() {
-           
+
+        }
+
+        function wp_wplyr_add_source(id, source, type) {
+            if (typeof window.videoSourceMap === 'undefined') {
+                window.videoSourceMap = {};
+            }
+            if (!(id in window.videoSourceMap)) {
+                window.videoSourceMap[id] = [];
+            }
+            window.videoSourceMap[id].push({
+                source: source,
+                type: type
+            });
         }
     </script>
 <?php
@@ -239,16 +180,26 @@ function wp_wplyr_video_shortcode($id)
     extract(shortcode_atts(array(
         'id' => 'id'
     ), $id));
-    $source = WPLYR_VIDEO_URL.get_post_meta($id)["_wp_wplyr_options"][0];
-    $html = ' <div class="container">
-                <div class="video-container" id="container">
-                 <video controls crossorigin playsinline id="player">
-                 <source src="'.$source.'" type="video/mp4">
+   
+    $html = '<div class="wplyr_container">
+                 <video controls crossorigin playsinline class="wplyr_player wplyr_video_' . $id . '">
                  </video>
                 </div>
-            </div>';
+                <script>';
+    for ($i = 1; $i < sizeof(unserialize(get_post_meta($id)["_wp_wplyr_video_source"][0])); $i++) {
+        $path = unserialize(get_post_meta($id)["_wp_wplyr_video_source"][0])[$i];
+        if (empty($path)) {
+            $source = '';
+        } else {
+            $source = $GLOBALS['wplyr_video_url'] . $path;
+        }
+        $type = unserialize(get_post_meta($id)["_wp_wplyr_video_type"][0])[$i];
+        $html .= 'wp_wplyr_add_source(' . $id . ',"' . $source . '","' . $type . '");';
+    }
+    $html .= '</script>';
     return $html;
 }
+
 
 //add_filter( 'script_loader_tag', 'wp_wplyr_modify_jsx_tag', 10, 3 );
 add_action('init', 'wp_wplyr_register_content_type');
@@ -259,8 +210,8 @@ if (is_gutenberg_active()) {
 }
 add_action('wp_enqueue_scripts', 'wp_wplyr_video_custom_script_load');
 add_action('wp_enqueue_scripts', 'wp_wplyr_video_setup');
-add_action('add_meta_boxes', 'wp_wplyr_add_option_box');
-add_action('save_post', 'wp_wplyr_save_postdata');
+
+
 add_action('rest_api_init', function () {
     register_rest_route('wplyr', '/videos/', array(
         'methods' => 'GET',
