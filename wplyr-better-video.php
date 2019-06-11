@@ -6,9 +6,9 @@
  * Author: Jakub Váverka
  * Author URI: https://github.com/LaserPork
  **/
-if(!isset($GLOBALS['wplyr_video_path'])){
-    $GLOBALS['wplyr_video_path'] = $_SERVER['DOCUMENT_ROOT'] . "/wordpress/wp-content/videos";
-    $GLOBALS['wplyr_video_url'] = get_site_url() . "/../wordpress/wp-content/videos";
+if(!defined('wplyr_video_path')){
+    define('wplyr_video_path',$_SERVER['DOCUMENT_ROOT'] . "/wordpress/wp-content/videos");
+    define('wplyr_video_url',get_site_url() . "/../wordpress/wp-content/videos");
 }
 
 if (!defined('ABSPATH')){
@@ -191,7 +191,7 @@ function wp_wplyr_video_shortcode($id)
         if (empty($path)) {
             $source = '';
         } else {
-            $source = $GLOBALS['wplyr_video_url'] . $path;
+            $source = wplyr_video_url. $path;
         }
         $type = unserialize(get_post_meta($id)["_wp_wplyr_video_type"][0])[$i];
         $html .= 'wp_wplyr_add_source(' . $id . ',"' . $source . '","' . $type . '");';

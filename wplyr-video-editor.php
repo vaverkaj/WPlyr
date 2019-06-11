@@ -66,8 +66,8 @@ function wp_wplyr_option_box_html($post)
     <div class="wplyr_editor_border" id="wplyr_hidden_path_editor" hidden>
         <a class="wplyr_editor_remove_button" onclick="remove_editor_field(this.parentNode)"></a>
         <div class="wplyr-bar">
-            <a class="wplyr-bar-item wplyr-button" onclick="openTab('video')">Video</a>
-            <a class="wplyr-bar-item wplyr-button" onclick="openTab('YouTube')">YouTube</a>
+            <a class="wplyr-bar-item wplyr-button" onclick="openTab(this,'Video')">Video</a>
+            <a class="wplyr-bar-item wplyr-button" onclick="openTab(this,'YouTube')">YouTube</a>
         </div>
         <input name="wp_wplyr_video_type[]" value="video" class="wp_wplyr_video_type_value" type="text" readonly hidden>
         <input name="wp_wplyr_video_source[]" type="text" class="wp_wplyr_video_source_value" readonly hidden>
@@ -77,10 +77,10 @@ function wp_wplyr_option_box_html($post)
                 <b class="wp_wplyr_video_source_value"></b>
             </div>
             <?php
-            echo php_file_tree($GLOBALS['wplyr_video_path'], "change_picked_file('[link]',this);");
+            echo php_file_tree(wplyr_video_path, "change_picked_file('[link]',this);");
             ?>
         </div>
-        <div class="wplyr-tab wplyr-youtube-tab">
+        <div class="wplyr-tab wplyr-youtube-tab" style="display: none;">
             <div>
                 <label>Url of the video:</label>
                 <input type="text" class="wp_wplyr_video_source_value" onchange="updateInputs()" value="">
@@ -143,7 +143,7 @@ function wp_wplyr_print_editor($source, $type)
                 <b class="wp_wplyr_video_source_value"><?php echo $source; ?></b>
             </div>
             <?php
-            echo php_file_tree($GLOBALS['wplyr_video_path'], "change_picked_file('[link]',this);");
+            echo php_file_tree(wplyr_video_path, "change_picked_file('[link]',this);");
             ?>
         </div>
         <div class="wplyr-tab wplyr-youtube-tab" style="<?php

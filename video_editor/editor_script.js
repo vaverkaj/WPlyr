@@ -25,6 +25,14 @@ function openTab(element, type) {
             x[i].style.display = "none";
         }
     }
+    x = element.getElementsByClassName("wp_wplyr_video_source_value");
+    for (i = 0; i < x.length; i++) {
+		if(x[i].tagName == 'B'){
+			x[i].textContent = "";
+		}else if(x[i].tagName == 'INPUT'){
+			x[i].value = "";
+		}
+	}
 }
 
 function setType(inputParent, type){

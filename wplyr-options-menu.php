@@ -78,18 +78,15 @@ function wplyr_setting_section_callback_function()
 function wplyr_setting_callback_function()
 {
     ?>
-    <input name="wplyr_setting_video_path" 
+    <label name="wplyr_setting_video_path" 
     id="wplyr_setting_video_path" 
-    type="text" 
-    value="<?php echo get_option('wplyr_setting_video_path')?>" 
-     />
+     ><?php echo get_option('wplyr_setting_video_path')?></label>
      <?php
     
 }
 
 function wplyr_modify_global_paths(){
-    $GLOBALS['wplyr_video_path'] = $_SERVER['DOCUMENT_ROOT'] . "/wordpress".get_option('wplyr_setting_video_path');
-    $GLOBALS['wplyr_video_url'] = get_site_url() . "/../wordpress".get_option('wplyr_setting_video_path');
+    
 }
 
 add_action('update_option_wplyr_setting_video_path', 'wplyr_modify_global_paths');
