@@ -15,6 +15,11 @@ if (!defined('ABSPATH')){
     define('ABSPATH', dirname(__FILE__) . '/');
 }
 
+if ( ! class_exists( 'WP_List_Table' ) ) {
+    require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+}
+
+include("wplyr-video-list.php");
 include("video_editor/phpFileTree/php_file_tree.php");    
 include("wplyr-options-menu.php");
 include("wplyr-video-editor.php");

@@ -22,7 +22,6 @@ function wp_wplyr_add_option_box()
 
 function wp_wplyr_post_picker_html($post)
 {
-
     $args = array(
         'post_type' => 'wp_wplyr_videos',
         'posts_per_page' => -1,
@@ -46,12 +45,18 @@ function wp_wplyr_post_picker_html($post)
                 if (tinyMCE && tinyMCE.activeEditor) {
                     tinymce.activeEditor.execCommand('mceInsertContent', false,
                         "[wplyr id=" + video_id + "]"
-                    );
-                }
+                        );
+                    }
             }
-        </script>
+            </script>
     <?php
-}
+    }
+    /*
+    $video_list = new Video_List();
+    $video_list->prepare_items();
+    $video_list->display(); 
+    */
+    
 }
 
 
@@ -83,7 +88,7 @@ function wp_wplyr_option_box_html($post)
         <div class="wplyr-tab wplyr-youtube-tab" style="display: none;">
             <div>
                 <label>Url of the video:</label>
-                <input type="text" class="wp_wplyr_video_source_value" onchange="updateInputs()" value="">
+                <input type="text" class="wp_wplyr_youtube_input wp_wplyr_video_source_value" onchange="updateInputs()" value="">
             </div>
         </div>
     </div>
@@ -92,8 +97,10 @@ function wp_wplyr_option_box_html($post)
         <?php
         $sources = get_post_meta($post->ID, '_wp_wplyr_video_source', true);
         $types = get_post_meta($post->ID, '_wp_wplyr_video_type', true);
-        for ($i = 1; $i < sizeof($sources); $i++) {
-            wp_wplyr_print_editor($sources[$i], $types[$i]);
+        if(!empty($sources)){
+            for ($i = 1; $i < sizeof($sources); $i++) {
+                wp_wplyr_print_editor($sources[$i], $types[$i]);
+            }
         }
         ?>
     </div>
@@ -164,4 +171,9 @@ function wp_wplyr_print_editor($source, $type)
 
 add_action('save_post', 'wp_wplyr_save_postdata');
 add_action('add_meta_boxes', 'wp_wplyr_add_option_box');
-?>
+
+
+
+
+
+
