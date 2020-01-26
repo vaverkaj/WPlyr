@@ -6,6 +6,7 @@
  * Author: Jakub Váverka
  * Author URI: https://github.com/LaserPork
  **/
+
 if(!defined('wplyr_video_path')){
     define('wplyr_video_path',$_SERVER['DOCUMENT_ROOT'] . "/wordpress/wp-content/videos");
     define('wplyr_video_url',get_site_url() . "/../wordpress/wp-content/videos");
@@ -59,8 +60,8 @@ function is_gutenberg_active()
 
 function wp_wplyr_video_custom_script_load()
 {
-    wp_enqueue_script('plyr-polyfilled-min', plugin_dir_url(__FILE__) . '/player/node_modules/plyr/dist/plyr.polyfilled.min.js');
-    wp_enqueue_style('plyr-stylesheet', plugin_dir_url(__FILE__) . '/player/node_modules/plyr/dist/plyr.css');
+    //wp_enqueue_script('plyr-polyfilled-min', plugin_dir_url(__FILE__) . '/player/node_modules/plyr/dist/plyr.polyfilled.min.js');
+    //wp_enqueue_style('plyr-stylesheet', plugin_dir_url(__FILE__) . '/player/node_modules/plyr/dist/plyr.css');
     //wp_enqueue_style( 'bootstrap-stylesheet', plugin_dir_url(__FILE__) .'/player/node_modules/bootstrap/dist/css/bootstrap.min.css');
     wp_enqueue_script('player-min', plugin_dir_url(__FILE__) . '/player/dist/player.min.js');
     wp_enqueue_style('player-stylesheet', plugin_dir_url(__FILE__) . '/player/dist/player.css');
@@ -213,6 +214,7 @@ if (is_gutenberg_active()) {
 } else {
     add_shortcode("wplyr", "wp_wplyr_video_shortcode");
 }
+
 add_action('wp_enqueue_scripts', 'wp_wplyr_video_custom_script_load');
 add_action('wp_enqueue_scripts', 'wp_wplyr_video_setup');
 

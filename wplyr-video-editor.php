@@ -2,12 +2,13 @@
 
 function wp_wplyr_add_option_box()
 {
+
     if (!is_gutenberg_active()) {
         add_meta_box(
             'wp_wplyr_post_picker_id',           // Unique ID
             'Embed WPlyr video',  // Box title
             'wp_wplyr_post_picker_html',  // Content callback, must be of type callable
-            'post'                   // Post type
+             get_post_types( array('public' => true) )                  // Post type
         );
     }
 
@@ -22,35 +23,68 @@ function wp_wplyr_add_option_box()
 
 function wp_wplyr_post_picker_html($post)
 {
+    wp_enqueue_style('wplyr-bootstrap-stylesheet', plugin_dir_url(__FILE__) . '/bootstrap-4.3.1-dist/css/bootstrap.min.css');
+    wp_enqueue_style('wplyr-datatables-stylesheet', plugin_dir_url(__FILE__) . '/datatables/datatables.css');
+    wp_enqueue_script('wplyr-datatables-jq-script', plugin_dir_url(__FILE__) . '/datatables/jquery.dataTables.min.js');
+    wp_enqueue_script('wplyr-datatables-bs-script', plugin_dir_url(__FILE__) . '/datatables/dataTables.bootstrap4.min.js');
+    
     $args = array(
         'post_type' => 'wp_wplyr_videos',
         'posts_per_page' => -1,
         'numberposts' => -1
     );
     $posts = get_posts($args);
+    ?>
+    <table class="wp-list-table table widefat fixed striped posts" id="dataTable" >
+    <thead>
+                    <tr>
+                      <th>Post ID</th>
+                      <th>Name</th>
+                      <th>Shortcode</th>
+                      <th>Button</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>Post ID</th>
+                      <th>Name</th>
+                      <th>Shortcode</th>
+                      <th>Button</th>
+                    </tr>
+                  </tfoot>
+    <tbody>
+    <?php
     foreach ($posts as $key => $post) {
         $posts[$key]->acf = get_post_meta($post->ID);
         ?>
-        <table class="wp-list-table widefat fixed striped posts">
             <tr>
-                <td style="width:20px"> <?php echo $post->ID ?> </td>
+                <td> <?php echo $post->ID ?> </td>
                 <td> <?php echo $post->post_title ?> </td>
                 <td> <b>[wplyr id=<?php echo $post->ID ?>]</b> </td>
                 <td> <button class="button" type="button" onclick="insert_shortcode_into_editor(<?php echo $post->ID ?>)">Insert shortcode</button> </td>
             </tr>
-        </table>
 
         <script>
             function insert_shortcode_into_editor(video_id) {
                 if (tinyMCE && tinyMCE.activeEditor) {
                     tinymce.activeEditor.execCommand('mceInsertContent', false,
-                        "[wplyr id=" + video_id + "]"
-                        );
+                    "[wplyr id=" + video_id + "]"
+                    );
                     }
-            }
+                }
+                
             </script>
     <?php
     }
+    ?>
+        </tbody>
+        </table>
+        <script>
+            $(document).ready(function() {
+                $('#dataTable').DataTable();
+            });
+        </script>
+    <?php
     /*
     $video_list = new Video_List();
     $video_list->prepare_items();
@@ -62,6 +96,7 @@ function wp_wplyr_post_picker_html($post)
 
 function wp_wplyr_option_box_html($post)
 {
+    
     wp_enqueue_script('wplyr-file-tree-script', plugin_dir_url(__FILE__) . '/video_editor/phpFileTree/php_file_tree.js');
     wp_enqueue_style('wplyr-file-tree-stylesheet', plugin_dir_url(__FILE__) . '/video_editor/phpFileTree/styles/default/default.css');
     wp_enqueue_script('wplyr-editor-script', plugin_dir_url(__FILE__) . '/video_editor/editor_script.js');
