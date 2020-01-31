@@ -35,10 +35,11 @@ function wp_wplyr_post_picker_html($post)
     );
     $posts = get_posts($args);
     ?>
+    <a href="<?php echo site_url()?>/wp-admin/post-new.php?post_type=wp_wplyr_videos" id="create-new-video-button" class="button button-primary button-large">Create new video</a>
     <table class="wp-list-table table widefat fixed striped posts" id="dataTable" >
     <thead>
                     <tr>
-                      <th>Post ID</th>
+                      <th>Created</th>
                       <th>Name</th>
                       <th>Shortcode</th>
                       <th>Button</th>
@@ -46,7 +47,7 @@ function wp_wplyr_post_picker_html($post)
                   </thead>
                   <tfoot>
                     <tr>
-                      <th>Post ID</th>
+                      <th>Created</th>
                       <th>Name</th>
                       <th>Shortcode</th>
                       <th>Button</th>
@@ -58,7 +59,7 @@ function wp_wplyr_post_picker_html($post)
         $posts[$key]->acf = get_post_meta($post->ID);
         ?>
             <tr>
-                <td> <?php echo $post->ID ?> </td>
+                <td> <?php echo $post->post_date ?> </td>
                 <td> <?php echo $post->post_title ?> </td>
                 <td> <b>[wplyr id=<?php echo $post->ID ?>]</b> </td>
                 <td> <button class="button" type="button" onclick="insert_shortcode_into_editor(<?php echo $post->ID ?>)">Insert shortcode</button> </td>
@@ -132,6 +133,12 @@ function wp_wplyr_option_box_html($post)
         <?php
         $sources = get_post_meta($post->ID, '_wp_wplyr_video_source', true);
         $types = get_post_meta($post->ID, '_wp_wplyr_video_type', true);
+        $highestId = $post->ID;
+        while(empty($sources) && $highestId > 0){
+            $highestId--;
+            $sources = get_post_meta($highestId, '_wp_wplyr_video_source', true);
+            $types = get_post_meta($highestId, '_wp_wplyr_video_type', true);
+        }
         if(!empty($sources)){
             for ($i = 1; $i < sizeof($sources); $i++) {
                 wp_wplyr_print_editor($sources[$i], $types[$i]);
