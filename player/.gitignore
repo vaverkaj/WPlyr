@@ -1,0 +1,7 @@
+node_modules/*
+!node_modules/plyr/
+node_modules/plyr/*
+!node_modules/plyr/dist/
+!node_modules/bootstrap/
+node_modules/bootstrap/*
+!node_modules/bootstrap/dist/

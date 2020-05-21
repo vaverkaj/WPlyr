@@ -1,26 +1,27 @@
-(function (blocks, editor, element, components) {
-    blocks.registerBlockType('wplyr-better-video/wplyr-video-block', {
-        title: 'WPlyr video',
-        icon: 'format-video',
-        category: 'embed',
-        attributes: {
-            content: {
-                type: 'string',
-                source: 'meta',
-                meta: 'wp_wplyr_meta_block_field',
+/**
+ * React component used for deserialization of Gutenberg block
+ */
+(function(blocks, editor, element, components) {
+        blocks.registerBlockType('wplyr-better-video/wplyr-video-block', {
+            title: 'WPlyr video',
+            icon: 'format-video',
+            category: 'embed',
+            attributes: {
+                content: {
+                    type: 'string',
+                    source: 'meta',
+                    meta: 'wp_wplyr_meta_block_field',
+                },
             },
-        },
-        edit:
-        function (props) {
-            console.log(blocks.getChildBlockNames('wplyr-better-video/wplyr-video-block'))
+            edit: function(props) {
+                console.log(blocks.getChildBlockNames('wplyr-better-video/wplyr-video-block'))
                 console.log(JSON.parse(props.attributes.content))
-                if(typeof props.attributes.videosArray === 'undefined'){
+                if (typeof props.attributes.videosArray === 'undefined') {
                     props.attributes.videosArray = [];
-                } 
+                }
                 return [
                     element.createElement(
-                        editor.InspectorControls,
-                        { key: 'controls' },
+                        editor.InspectorControls, { key: 'controls' },
                         element.createElement(
                             components.PanelBody, {
                                 title: 'Search for video:',
@@ -42,19 +43,19 @@
                                         fetch('http://localhost/wordpress/wp-json/wplyr/videos')
                                             .then(res => res.json())
                                             .then(data => {
-                                                props.setAttributes({videosArray : data});
-                                            });                             
+                                                props.setAttributes({ videosArray: data });
+                                            });
                                     }
                                 }, 'Search'
-                            ),element.createElement("ul", null, props.attributes.videosArray.map(function (array, index) {
+                            ), element.createElement("ul", null, props.attributes.videosArray.map(function(array, index) {
                                 return element.createElement("li", {
-                                  key: index
+                                    key: index
                                 }, array['post_title']);
-                              })), element.createElement(
+                            })), element.createElement(
                                 components.Button, {
                                     isDefault: true,
                                     onClick: () => {
-                                                           
+
                                     }
                                 }, 'Open Search'
                             )
@@ -63,15 +64,15 @@
                     element.createElement(WPlyr_video)
                 ]
             },
-        save: function () {
-            return element.createElement(WPlyr_video);
-        },
-    });
-}(
-    window.wp.blocks,
-    window.wp.editor,
-    window.wp.element,
-    window.wp.components
-)
+            save: function() {
+                return element.createElement(WPlyr_video);
+            },
+        });
+    }(
+        window.wp.blocks,
+        window.wp.editor,
+        window.wp.element,
+        window.wp.components
+    )
 
 );

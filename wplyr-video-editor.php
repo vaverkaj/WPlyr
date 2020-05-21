@@ -1,8 +1,14 @@
 <?php
 
+/**
+ * Adding created components to Wordpress editor screens
+ */
 function wp_wplyr_add_option_box()
 {
 
+    /**
+     * Component for embedding already created video
+     */
     if (!is_gutenberg_active()) {
         add_meta_box(
             'wp_wplyr_post_picker_id',           // Unique ID
@@ -12,6 +18,9 @@ function wp_wplyr_add_option_box()
         );
     }
 
+    /**
+     * Component for video creation
+     */
     add_meta_box(
         'wp_wplyr_video_box_id',           // Unique ID
         'Video options',  // Box title
@@ -20,7 +29,9 @@ function wp_wplyr_add_option_box()
     );
 }
 
-
+/**
+ * Code that prints the shortcode embedding component
+ */
 function wp_wplyr_post_picker_html($post)
 {
     wp_enqueue_style('wplyr-bootstrap-stylesheet', plugin_dir_url(__FILE__) . '/bootstrap-4.3.1-dist/css/bootstrap.min.css');
@@ -86,7 +97,9 @@ function wp_wplyr_post_picker_html($post)
             });
         </script>
     <?php
+
     /*
+    Old way of displaying video results table
     $video_list = new Video_List();
     $video_list->prepare_items();
     $video_list->display(); 
@@ -94,7 +107,9 @@ function wp_wplyr_post_picker_html($post)
     
 }
 
-
+/**
+ * Code that prints the video creation component
+ */
 function wp_wplyr_option_box_html($post)
 {
     
@@ -150,6 +165,9 @@ function wp_wplyr_option_box_html($post)
 <?php
 }
 
+/**
+ * This method saves the created video playlist into the database
+ */
 function wp_wplyr_save_postdata($post_id)
 {
     if (array_key_exists('wp_wplyr_video_source', $_POST)) {
@@ -168,7 +186,9 @@ function wp_wplyr_save_postdata($post_id)
     }
 }
 
-
+/**
+ * Used for loading saved state of the video playlist component
+ */
 function wp_wplyr_print_editor($source, $type)
 {
     ?>

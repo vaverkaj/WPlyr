@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * Adding the menu option
+*/
 function wp_wplyr_register_menu()
 {
     add_options_page('Wplyr Plugin Options', 'WPlyr Plugin', 'manage_options', 'wplyr-video-menu', 'wp_wplyr_menu');
@@ -22,16 +26,14 @@ function wp_wplyr_menu()
 
 add_action('admin_menu', 'wp_wplyr_register_menu');
 
-// ------------------------------------------------------------------
-// Add all your sections, fields and settings during admin_init
-// ------------------------------------------------------------------
-//
-
+/**
+ * Add all sections, fields and settings during admin_init
+*/
 function wplyr_settings_api_init()
 {
 
-    // Add the section to reading settings so we can add our
-    // fields to it
+    // Add the section to reading settings so
+    // fields can be added to it
     add_settings_section(
         'wplyr_setting_section',
         'WPlyr Plugin Options',
@@ -39,8 +41,8 @@ function wplyr_settings_api_init()
         'wplyr-video-menu'
     );
 
-    // Add the field with the names and function to use for our new
-    // settings, put it in our new section
+    // Add the field with the names and function for new
+    // setting option, put it in our new section
     add_settings_field(
         'wplyr_setting_video_path',
         'Path to the video files:',
@@ -49,31 +51,28 @@ function wplyr_settings_api_init()
         'wplyr_setting_section'
     );
 
-    // Register our setting so that $_POST handling is done for us and
-    // our callback function just has to echo the <input>
+    // Register setting so that $_POST handling is done and
+    // callback function just has to echo the <input>
     register_setting('wplyr-video-menu', 'wplyr_setting_video_path');
 }
 
 add_action('admin_init', 'wplyr_settings_api_init');
 
 
-// ------------------------------------------------------------------
-// Settings section callback function
-// ------------------------------------------------------------------
-//
-// This function is needed if we added a new section. This function 
-// will be run at the start of our section
-//
+/**
+ * Settings section callback function
+ *
+ * This function is needed if we added a new section. This function 
+ * runs at the start of section
+ */
 
 function wplyr_setting_section_callback_function()
 { }
 
-// ------------------------------------------------------------------
-// Callback function for our example setting
-// ------------------------------------------------------------------
-//
-// creates a checkbox true/false option. Other types are surely possible
-//
+/* Callback function for setting
+*
+* creates a checkbox true/false option. Other types are surely possible
+*/
 
 function wplyr_setting_callback_function()
 {

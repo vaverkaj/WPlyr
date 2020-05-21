@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Alternative way of displaying table of created videos. Currently not used
+ */
 class Video_List extends WP_List_Table
 {
 

@@ -1,0 +1,52 @@
+@import '../../node_modules/alertifyjs/build/css/alertify';
+.wplyr_container {
+    position: relative;
+    &:before {
+        display: block;
+        content: "";
+        width: 100%;
+        padding-top: (9 / 16) * 100%;
+    }
+    >.plyr {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: black;
+    }
+}
+
+.plyr__volume {
+    min-width: 100px;
+    input {
+        position: relative;
+        align-items: baseline;
+    }
+}
+
+.plyr__progress {
+    width: -webkit-fill-available;
+    display: flex;
+    min-width: 0px;
+    margin-left: 10px;
+    margin-right: 30px;
+}
+
+.plyr__control {
+    display: flex;
+    min-width: 0px;
+}
+
+.plyr__volume input {
+    transform: translateY(30%);
+}
+
+img,
+video,
+audio {
+    /* Prevent overflow */
+    max-width: 100%;
+    /* Prevent gap underneath */
+    vertical-align: middle;
+}

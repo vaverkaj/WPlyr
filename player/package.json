@@ -1,0 +1,54 @@
+{
+  "name": "plyr_showplayer",
+  "version": "1.0.0",
+  "description": "Repository for Master Thesis and Thematic Project",
+  "main": "index.html",
+  "dependencies": {
+    "alertify": "^0.3.0",
+    "alertifyjs": "^1.11.4",
+    "babel": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-latest": "^6.24.1",
+    "bootstrap": "^4.3.1",
+    "del": "^3.0.0",
+    "gulp": "^4.0.1",
+    "gulp-autoprefixer": "^6.0.0",
+    "gulp-clean-css": "^4.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-filter": "^5.1.0",
+    "gulp-header": "^2.0.5",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-size": "^3.0.0",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-svgmin": "^2.1.0",
+    "gulp-svgstore": "^7.0.0",
+    "gulp-uglify-es": "^1.0.4",
+    "gulp-util": "^3.0.8",
+    "jquery": "^3.5.1",
+    "node-sass": "^4.14.1",
+    "plyr": "^3.4.7",
+    "popper.js": "^1.15.0",
+    "rollup-plugin-babel": "^4.0.3",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^3.4.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.0",
+    "@babel/preset-env": "^7.2.0",
+    "gulp-better-rollup": "^3.4.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LaserPork/DP.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LaserPork/DP/issues"
+  },
+  "homepage": "https://github.com/LaserPork/DP#readme"
+}

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <script src="node_modules/plyr/dist/plyr.polyfilled.min.js"></script>
+    <script src="dist/player.min.js"></script>
+    <link rel="stylesheet" href="node_modules/plyr/dist/plyr.css">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dist/player.css">
+</head>
+
+<body style="background-color: darkslategray;">
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-md-10 offset-md-1 align-middle p-5 rounded" style="background-color: deepskyblue;">
+                <div class="video-container" id="container">
+                    <video controls crossorigin playsinline poster="media/thumb.jpeg" id="player">
+
+                        <source src="media/toystory_lowframe.mp4" type="video/mp4" size="576">
+                        <source src="media/toystory.mp4" type="video/mp4" size="720">
+                        <source src="media/toystory.webm" type="video/webm" size="720">
+
+                    </video>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
